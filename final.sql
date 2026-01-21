@@ -23,6 +23,7 @@ CREATE TABLE Vehicle_Details (
     FOREIGN KEY (driver_id) REFERENCES Shippers(driver_id)
 );
 
+
 CREATE TABLE Shipments (
     shipment_id INT PRIMARY KEY,
     item_name VARCHAR(255),
@@ -30,6 +31,7 @@ CREATE TABLE Shipments (
     value DECIMAL(15, 2),
     status VARCHAR(50)
 );
+
 
 CREATE TABLE Delivery_Orders (
     order_id INT PRIMARY KEY,
