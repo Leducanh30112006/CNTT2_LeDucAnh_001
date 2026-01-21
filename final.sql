@@ -1,11 +1,3 @@
-/*
-• Tạo github repository theo cú pháp :  CNTT2_LeDucAnh_001
-Công nghệ sử dụng: MYSQL 
-IDE : MYSQL Workbench
-• 
-• Tạo database final;
-*/
-
 CREATE DATABASE final;
 USE final;
 
@@ -70,12 +62,14 @@ INSERT INTO Shippers (driver_id, full_name, phone, license_type, rating) VALUES
 (4, 'Pham Minh Duc', '0354567890', 'B2', 4.9),
 (5, 'Hoang Quoc Viet', '0775678901', 'C', 4.7);
 
+
 INSERT INTO Vehicle_Details (vehicle_id, driver_id, plate_number, vehicle_type, max_payload) VALUES
 (101, 1, '29C-123.45', 'Tải', 3500),
 (102, 2, '59A-888.88', 'Xe máy', 500),
 (103, 3, '15R-999.99', 'Container', 32000),
 (104, 4, '30F-111.22', 'Tải', 1500),
 (105, 5, '43C-444.55', 'Tải', 5000);
+
 
 INSERT INTO Shipments (shipment_id, item_name, actual_weight, value, status) VALUES
 (5001, 'Smart TV Samsung 55 inch', 25.5, 15000000, 'In Transit'),
@@ -84,12 +78,14 @@ INSERT INTO Shipments (shipment_id, item_name, actual_weight, value, status) VAL
 (5004, 'Thùng trái cây nhập khẩu', 15.0, 2500000, 'Returned'),
 (5005, 'Máy giặt LG Inverter', 70.0, 9500000, 'In Transit');
 
+
 INSERT INTO Delivery_Orders (order_id, shipment_id, driver_id, dispatch_time, shipping_fee, status) VALUES
 (9001, 5001, 1, '2024-05-20 08:00:00', 2000000, 'Processing'),
 (9002, 5002, 2, '2024-05-20 09:30:00', 3500000, 'Finished'),
 (9003, 5003, 3, '2024-05-20 10:15:00', 2500000, 'Processing'),
 (9004, 5004, 5, '2024-05-21 07:00:00', 1500000, 'Finished'),
 (9005, 5005, 4, '2024-05-21 08:45:00', 2500000, 'Pending');
+
 
 INSERT INTO Delivery_Log (log_id, order_id, current_location, timestamp, note) VALUES
 (1, 9001, 'Kho tổng (Hà Nội)', '2021-05-15 08:15:00', 'Rời kho'),
@@ -98,18 +94,18 @@ INSERT INTO Delivery_Log (log_id, order_id, current_location, timestamp, note) V
 (4, 9003, 'Cảng Hải Phòng', '2024-05-20 11:00:00', 'Rời kho'),
 (5, 9004, 'Kho hoàn hàng (Đà Nẵng)', '2024-05-21 14:00:00', 'Đã nhập kho trả hàng');
 
-/*
-a. Viết câu lệnh tăng phí vận chuyển thêm 10% cho tất cả các phiếu điều phối có trạng thái 'Finished' và có trọng lượng hàng hóa lớn hơn 100kg.
-*/
+
+-- a. Viết câu lệnh tăng phí vận chuyển thêm 10% cho tất cả các phiếu điều phối có trạng thái 'Finished' và có trọng lượng hàng hóa lớn hơn 100kg.
+
 
 UPDATE Delivery_Orders d
 JOIN Shipments s ON d.shipment_id = s.shipment_id
 SET d.shipping_fee = d.shipping_fee * 1.10
 WHERE d.status = 'Finished' AND s.actual_weight > 100;
 
-/*
-b. Viết câu lệnh xóa các bản ghi trong nhật ký di chuyển (Delivery_Log) có thời điểm ghi nhận trước ngày 17/05/2024.
-*/
+
+--  Viết câu lệnh xóa các bản ghi trong nhật ký di chuyển (Delivery_Log) có thời điểm ghi nhận trước ngày 17/05/2024.
+
 
 DELETE FROM Delivery_Log 
 WHERE timestamp < '2024-05-17 00:00:00';
@@ -123,17 +119,17 @@ SELECT plate_number, vehicle_type, max_payload
 FROM Vehicle_Details
 WHERE max_payload > 5000 OR (vehicle_type = 'Container' AND max_payload < 2000);
 
-/*
-Câu 2 (5đ): Lấy Họ tên, Số điện thoại của tài xế có Điểm đánh giá từ 4.5 đến 5.0 và Số điện thoại bắt đầu bằng '090'.
-*/
+
+-- Câu 2 (5đ): Lấy Họ tên, Số điện thoại của tài xế có Điểm đánh giá từ 4.5 đến 5.0 và Số điện thoại bắt đầu bằng '090'.
+
 
 SELECT full_name, phone
 FROM Shippers
 WHERE (rating BETWEEN 4.5 AND 5.0) AND phone LIKE '090%';
 
-/*
-Câu 3 (5đ): Viết truy vấn để hiển thị danh sách các vận đơn ở trang thứ 2 (giả sử mỗi trang có 2 đơn), với điều kiện danh sách gốc được sắp xếp giảm dần theo Giá trị hàng hóa.
-*/
+
+-- Câu 3 (5đ): Viết truy vấn để hiển thị danh sách các vận đơn ở trang thứ 2 (giả sử mỗi trang có 2 đơn), với điều kiện danh sách gốc được sắp xếp giảm dần theo Giá trị hàng hóa.
+
 
 SELECT * FROM Shipments
 ORDER BY value DESC
@@ -149,18 +145,18 @@ FROM Delivery_Orders d
 JOIN Shippers s ON d.driver_id = s.driver_id
 JOIN Shipments sp ON d.shipment_id = sp.shipment_id;
 
-/*
-Câu 2 (7đ): Tính tổng Phí vận chuyển của mỗi tài xế. Chỉ lấy các tài xế có tổng Phí vận chuyển lớn hơn 3.000.000 VNĐ
-*/
+
+-- Câu 2 (7đ): Tính tổng Phí vận chuyển của mỗi tài xế. Chỉ lấy các tài xế có tổng Phí vận chuyển lớn hơn 3.000.000 VNĐ
+
 
 SELECT driver_id, SUM(shipping_fee) AS total_fee
 FROM Delivery_Orders
 GROUP BY driver_id
 HAVING SUM(shipping_fee) > 3000000;
 
-/*
-Câu 3 (7đ): Tìm thông tin những tài xế có trung bình Điểm đánh giá cao nhất.
-*/
+
+-- Câu 3 (7đ): Tìm thông tin những tài xế có trung bình Điểm đánh giá cao nhất.
+
 
 SELECT *
 FROM Shippers
@@ -173,9 +169,9 @@ Câu 1 (5đ): Tạo một Composite Index tên idx_shipment_status_value trên b
 
 CREATE INDEX idx_shipment_status_value ON Shipments(status, value);
 
-/*
-Câu 2 (5đ): Tạo một View tên vw_driver_performance hiển thị: Họ tên tài xế, Tổng số chuyến hàng đã nhận và Tổng doanh thu phí vận chuyển (không tính các đơn bị 'Cancelled').
-*/
+
+-- Câu 2 (5đ): Tạo một View tên vw_driver_performance hiển thị: Họ tên tài xế, Tổng số chuyến hàng đã nhận và Tổng doanh thu phí vận chuyển (không tính các đơn bị 'Cancelled').
+
 
 CREATE VIEW vw_driver_performance AS
 SELECT s.full_name, COUNT(d.order_id) AS total_trips, SUM(d.shipping_fee) AS total_revenue
@@ -201,9 +197,9 @@ BEGIN
 END //
 DELIMITER ;
 
-/*
-Câu 2 (5đ): Viết Trigger trg_update_driver_rating. Mỗi khi một phiếu điều phối mới được thêm vào với trạng thái 'Finished', tự động cộng 0.1 điểm vào rating của tài xế đó (tối đa không quá 5.0).
-*/
+
+-- Câu 2 (5đ): Viết Trigger trg_update_driver_rating. Mỗi khi một phiếu điều phối mới được thêm vào với trạng thái 'Finished', tự động cộng 0.1 điểm vào rating của tài xế đó (tối đa không quá 5.0).
+
 
 DELIMITER //
 CREATE TRIGGER trg_update_driver_rating
